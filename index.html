@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:buttonv-on="" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Web Page</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>Web page title</h1>
+    </header>
+    <div class="topnav" id="navbar">
+
+
+        <a href="javascript:void(0)"> Info</a>
+
+        <a href="javascript:void(0)">Login</a>
+        <a href="javascript:void(0)">Buy</a>
+        <!--<ul>-->
+            <!--<li v-for="c in userlog">-->
+                <!--{{ c }}-->
+            <!--</li>-->
+        <!--</ul>-->
+
+        <div>
+            <!--{{logged.}}-->
+        </div>
+
+        <div class="search-container">
+            <form>
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="registration_form" id="registration_form">
+            <!--<p>{{user.use}}</p>-->
+            <form id="registration" >
+                <!--novalidate="true"-->
+                <h1>Registration</h1>
+                <p>Please fill the form to create an account</p>
+                <hr style="width: 40%">
+                <p><b>Make a selection</b></p>
+                <select v-model="select" id="selection">
+                    <option disabled value="">Please select one</option>
+                    <option>Student/Parent</option>
+                    <option>Service provider</option>
+                </select>
+                <br><br>
+                <label for="registration_email"><b>Enter your email address</b></label>
+                <br><br>
+                <input required type="email" id="registration_email" v-model='registration_email' placeholder="Enter Email">
+                <br><br>
+                <label for="registration_password"><b>Enter your password</b></label>
+                <br><br>
+                <input required type="password" id="registration_password" v-model='registration_password' placeholder="Enter Password">
+                <br><br>
+                <button v-on:click='register' >REGISTER</button>
+            </form>
+            <br><br>
+            <p>-----------------------------------------------------  or  --------------------------------------------------------</p>
+            <form id="login_form">
+            <h1>Login</h1>
+                <label for="user">Enter your email address</label>
+                <br><br>
+                <input required type="email" id="user" v-model='user' placeholder="Enter Email">
+                <br><br>
+                <label for="pass">Enter your password</label>
+                <br><br>
+                <input required type="password" id="pass" v-model='pass' placeholder="Enter Password">
+                <br><br>
+                <button v-on:click='login' >LOGIN</button>
+                <button v-on:click='logout'>LOGOUT</button>
+            </form>
+        </div>
+
+        <script>
+            // var select = new Vue({
+            //     el:'#selection',
+            //     data:{
+            //         select:''
+            //     }
+            // })
+
+
+
+            var registration_form = new Vue({
+                el:'#registration_form',
+                data : {
+                        registration_email: '',
+                        registration_password: '',
+                        select: '',
+                        pass: '',
+                        user: [],
+                        logged: []
+                },
+                methods:{
+                    register:function(){
+                        var users='';
+                        var newEmail = this.registration_email;
+                        var newPassword = this.registration_password;
+                        var newSelect = this.select;
+                        if(localStorage.getItem('users')){
+                            users=JSON.parse(localStorage.getItem('users'));
+                        }
+                        if(users) {
+                            if (users.some(function (user) {
+                                return user.registration_email === newEmail;
+                                 // return user.registration_password === newPassword;
+                                 // return user.select ===newSelect;
+                            }))
+                            {
+                                alert('Email already exists!');
+                                return;
+                            }
+
+                            users.push({'registration_email': newEmail, 'registration_password': newPassword, 'selection:': newSelect});
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                        else if ((newSelect.length && newPassword.length)&&(this.validEmail(this.registration_email))){
+                            // return user.registration_email === newEmail;
+
+
+                              // if(newSelect.length && newPassword.length){
+                                  // newPassword.length >2 && newSelect !==""){
+                            users=[{'registration_email':this.registration_email,'registration_password':newPassword, 'selection:': newSelect}];
+                            localStorage.setItem('users',JSON.stringify(users));
+                            {
+                                alert('You are successfully registered now!');
+                                // return;
+                            }
+
+                                  // (newEmail.match(/^\w+([.-]?\w+)_@\w+(_[_.-]?\w+)_(.\w{2,3})+$/))
+
+                            }
+
+                        else{
+                                alert('Check again your credential')
+                                // return;
+                            }
+                        },
+                    validEmail: function (registration_email) {
+                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return re.test(registration_email);
+                    },
+                    login:function() {
+                        // var users='';
+                        var logged = '';
+                        var loggedEmail = this.user;
+                        var loggedPassword = this.pass;
+                        var message = '';
+                        var message_one='';
+                        var message_two='';
+
+                        if (localStorage.getItem('users')) {
+                            users = JSON.parse(localStorage.getItem('users'));
+                        }
+
+                        if (users) {
+                            users.some(function (user) {
+                                if (user.registration_email === loggedEmail && user.registration_password === loggedPassword) {
+                                    localStorage.setItem('logged', JSON.stringify(user));
+                                    logged = JSON.parse(localStorage.getItem('logged'));
+                                    // this.logged.push(this.user);
+                                    // logged.push({'email':loggedEmail});
+                                    // alert(logged.registration_email + ' you are LOGGED correctly');
+                                    message = logged.registration_email + ' you are LOGGED correctly';
+                                    // registration_form.user.push({'email':loggedEmail});
+
+                                    }
+
+                                else if (user.registration_email === loggedEmail && user.registration_password !== loggedPassword){
+                                    message_two= 'Your password is wrong.';
+                                }
+
+                                    // else if (user.registration_email !== loggedEmail ){
+                                    //     alert('Create an account');
+                                    // }
+                                else{
+                                        // alert('Your account/password is wrong');
+                                    message_one= 'The email is not registered.Create an account.';
+                                    }})}
+                        if (message){
+                            alert (message);
+                            // if(localStorage.getItem('logged')) {
+                            //     this.logged = JSON.parse(localStorage.getItem('logged'));
+                            // }
+                            // if(!this.user) return;
+                            // this.logged.push(this.user);
+                            // this.user = '';
+                            // this.saveCats();
+
+                            // return function(){
+                            // registration_form.loggedUser.push({email: loggedEmail});
+                            }
+                        else if (message_two){
+                            alert (message_two)
+                        }
+                        else {
+                            alert(message_one)
+                            }
+                    },
+                logout: function(){
+                        var logged='';
+                        if(localStorage.getItem('logged')){
+                            logged =JSON.parse(localStorage.getItem('logged'));
+                    }
+                    if (logged){
+                        localStorage.removeItem('logged');
+                        alert(logged.registration_email + ' LOGGED OUT!')
+                    }
+
+                }}})
+
+            var navbar = new Vue({
+                el:'#navbar',
+                data : {
+                    userlog:[
+                        ]
+                },
+
+                methods:{
+                    showup: function (){
+                        var logged='';
+                        if (localStorage.getItem('logged')) {
+                            logged = JSON.parse(localStorage.getItem('logged'));
+                            var myemail= logged.registration_email;
+                            topnav.userlog.push({email: myemail});
+
+                            // this.login= localStorage.getItem('logged')
+                            // users = JSON.parse(localStorage.getItem('users'));
+                        }}}})
+
+
+
+
+                                // if (user.registration_email === loggedEmail && user.registration_password === loggedPassword) {
+                                //
+                                //     // alert(logged.registration_email + ' you are LOGGED');
+                                //     localStorage.setItem('logged', JSON.stringify(user));
+                                //     logged = JSON.parse(localStorage.getItem('logged'));
+                                //     // var alert= 'logged ok';
+                                //     // alert(logged.registration_email + ' you are LOGGED correctly');
+                                //     message = logged.registration_email + 'you are logged';
+                                // }
+                                // else if (user.registration_email === loggedEmail && user.registration_password === loggedPassword ){
+                                //     // alert('Create an account');
+                                //     message_one = 'pass wrong';
+                                // }
+                                // else{
+                                //     // alert('Your password is wrong');
+                                //     message_two= 'Your password is wrong';
+                                // }
+                            // }}})
+
+                           // }
+
+                           // if (message === logged.registration_email + 'you are logged'){
+                           //     alert (logged.registration_email +'you are logged now!')
+                           //
+                           // }
+                           // else if (message_one === 'pass wrong'){
+                           //     alert('pass wrong')
+                           // }
+                           // else {
+                           //     alert('password wrong')
+                           // }
+
+                    // }}})
+
+
+                        // for (var i = 0; i < users.length; i++) {
+                        //     if (user.registration_email === loggedEmail) {
+                        //         // alert('logged');
+                        //         localStorage.setItem('logged', JSON.stringify(users.user));
+                        //         alert('logged');
+                        //     }
+                        //
+                        // }
+                        // localStorage.setItem('logged', JSON.stringify(user));
+
+
+
+
+
+                        //     localStorage.setItem('logged', JSON.stringify(user))
+                        // }
+
+                        // else {
+                        //     if (users.some(function (user) {
+                        //         return user.registration_email !== loggedEmail;
+                        //     })) {
+                        //         alert('Logged in NOT successfully!');
+                        //
+                        //     }
+
+                            // else {
+                            //     ('password is wrong')
+                            // }
+                    //     }
+                    // }}})
+
+
+
+
+
+            // alert('Logged in!');
+                                // return;
+
+                        //         logged=[{'loginEmail':loggedEmail}];
+                        //         logged.push({'loginEmail':loggedEmail});
+                        //         localStorage.setItem('logged',JSON.stringify(logged));
+                        //
+                        //     }}
+                        //
+                        //     else{
+                        //         alert('Check again! There is a problem')
+                        //     }
+                        // }
+                        //     }
+                        // })
+
+
+
+
+
+
+                //         var users='';
+                //         var user=  this.user;
+                //         // var loginPassword= this.password;
+                //
+                //         if(localStorage[users.user]=== undefined){
+                //             {
+                //                 alert("Login not recognized. Have you got an account?");
+                //                 return;
+                //             }}
+                //         else
+                //         {
+                //             var usrObj = JSON.parse(localStorage[user]);
+                //             // var pass = document.getElementById("pass").value;
+                //             var pass= this.pass;
+                //             if
+                //             (pass === usrObj.registration_password)
+                //             {
+                //                 alert(usrObj.registration_email + "  you are logged in.");
+                //                 localStorage.loggedInUsername = usrObj.registration_email;
+                //                 localStorage.setItem("nowLogin", usrObj.registration_email);
+                //             }
+                //             else
+                //             {
+                //                 alert("Password not correct. Please try again.");
+                //             }
+                //         }
+                // }
+
+
+            // var loginApp = new Vue({
+            //     el:'#login_form',
+            //     data:{
+            //         user:'',
+            //         pass:'',
+            //     },
+            //     methods:{
+            //         login:function(){
+            //             var user=  this.user;
+            //             // var loginPassword= this.password;
+            //
+            //             if(localStorage[user]=== undefined){
+            //                 {
+            //                     alert("Login not recognized. Have you got an account?");
+            //                     return;
+            //                 }}
+            //             else
+            //                 {
+            //                     var usrObj = JSON.parse(localStorage[user]);
+            //                     // var pass = document.getElementById("pass").value;
+            //                     var pass= this.pass;
+            //                     if
+            //                     (pass === usrObj.registration_password)
+            //                     {
+            //                         alert(usrObj.registration_email + "  you are logged in.");
+            //                         localStorage.loggedInUsrusername = usrObj.registration_email;
+            //                         localStorage.setItem("nowLogin", usrObj.registration_email);
+            //                     }
+            //                     else
+            //                     {
+            //                         alert("Password not correct. Please try again.");
+            //                     }
+            //                 }
+
+                        // if (localStorage(registration_email)=== undefined){
+                        //     this}
+                        // else { alert('ok')}
+                //     }
+                // }})
+
+
+        </script>
+
+
+        <!--<article class="component">-->
+        <!--<h3 class="h">Recommended Activities</h3>-->
+        <!--<ul>-->
+        <!--<li>Duis felis orci, pulvinar id metus ut, rutrum luctus orci. Cras porttitor imperdiet nunc, at ultricies tellus laoreet sit amet.</li>-->
+        <!--<li>Sed auctor cursus massa at porta. Integer ligula ipsum, tristique sit amet orci vel, viverra egestas ligula.</li>-->
+        <!--<li>Curabitur vehicula tellus neque, ac ornare ex malesuada et.</li>-->
+        <!--<li>In vitae convallis lacus. Aliquam erat volutpat. Suspendisse ac imperdiet turpis. Aenean finibus sollicitudin eros pharetra congue.</li>-->
+        <!--<li>Duis ornare egestas augue ut luctus. Proin blandit quam nec lacus varius commodo et a urna. Ut id ornare felis, eget fermentum sapien.</li>-->
+        <!--</ul>-->
+        <!--</article>-->
+        <!--<aside>-->
+        <!--<h3 class="h">More info</h3>-->
+        <!--<p>Nam vulputate diam nec tempor bibendum. Donec luctus augue eget malesuada ultrices. Phasellus turpis est, posuere sit amet dapibus ut, facilisis sed est.</p>-->
+        <!--</aside>-->
+        <!--<section id="pictures">-->
+        <!--<h3 class="h">Some pictures</h3>-->
+        <!--<div class="image">-->
+        <!--<img class="b" src="images/im.jpg" alt="photo">-->
+        <!--<img class="b" src="images/image.jpg" alt="photo1">-->
+        <!--<img class="b" src="images/download.jpg" alt="photo2">-->
+        <!--</div>-->
+
+        <!--</section>-->
+
+    </div>
+    <script>
+        window.onscroll = function () {
+            myFunction()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+
+    <footer>
+        <section>
+            <p id="author">Author: <span>Aneta Zabek</span></p>
+            <p id="contact">E-mail address: <span>AZ268@live.mdx.ac.uk</span></p>
+        </section>
+    </footer>
+</div>
+
+
+</body>
