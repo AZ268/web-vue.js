@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:buttonv-on="" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Web Page</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>Web page title</h1>
+    </header>
+    <div class="topnav" id="navbar">
+
+
+        <a href="index.html"> Info / Login</a>
+
+        <a href="javascript:void(0)">Activities</a>
+        <a href="javascript:void(0)">Buy</a>
+
+        <div class="search-container">
+            <form>
+                <input type="text" placeholder="Search.." id="search" v-model='query'>
+                <button v-on:click='search_button'><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content" style="height: 500px">
+        <div id="app">
+            <!--<input v-model="query">-->
+
+        <!--<div v-for="item in list" style=" padding: 10px 10px 10px 10px ;"-->
+             <!--v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">-->
+            <!--<li v-for="(c, name) in item">-->
+                <!--{{ name }}: {{ c }}-->
+            <!--</li>-->
+        <!--</div>-->
+            <form>
+                <input type="text" placeholder="Search.." id="query" v-model='query'>
+                <button v-on:click='computedList'><i class="fa fa-search"></i></button>
+            </form>
+
+
+            <h2>Seach Results</h2>
+
+
+            <div v-for="item in computedList" style=" padding: 10px 10px 10px 10px ;"
+                 v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">
+                <li v-for="(c, name) in item">
+                    {{ name }}: {{ c }}
+                </li>
+            </div>
+
+                <!--<div v-for="course in search_button" style=" padding: 10px 10px 10px 10px ;"-->
+                     <!--v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">-->
+                    <!--<li v-for="(c, name) in course">-->
+                        <!--{{ name }}: {{ c }}-->
+                    <!--</li>-->
+                <!--</div>-->
+
+        </div>
+
+
+
+
+        <article class="component">
+
+
+
+        </article>
+        <aside>
+
+        </aside>
+        <section >
+        </section>
+
+    </div>
+
+    <script>
+         new Vue({
+            el: '#app',
+            data: {
+                query:'',
+                list:[
+                    { topic: 'math', location: 'hendon', price: 100 },
+                    { topic: 'math', location: 'colindale', price: 80 },
+                    { topic: 'math', location: 'brent cross', price: 90 },
+                    { topic: 'math', location: 'golders green', price: 120 },
+                    { topic: 'english', location: 'hendon', price: 110 },
+                    { topic: 'english', location: 'colindale', price: 90 },
+                    { topic: 'english', location: 'brent cross', price: 90 },
+                    { topic: 'english', location: 'golders green', price: 130 },
+                    { topic: 'piano', location: 'hendon', price: 120 },
+                    { topic: 'piano', location: 'golders green', price: 140 }]
+            },
+            computed: {
+                computedList: function () {
+                    var vm = this
+                    return this.list.filter(function (item) {
+                        // return item.topic.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+                        return item.topic.indexOf(vm.query) !== -1
+                    })
+                }
+
+                    //     app.courses= app.courses.filter(function (course){
+                    //         return course.topic.match(/math/)
+                    // })
+                    // return this.courses.filter(function (course) {
+                    //     return course.topic === this.search
+                    // })
+
+                }
+            })
+    </script>
+
+
+
+
+
+
+
+
+
+    <script>
+        window.onscroll = function () {
+            myFunction()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+
+    <footer>
+        <section>
+            <p id="author">Author: <span>Aneta Zabek</span></p>
+            <p id="contact">E-mail address: <span>AZ268@live.mdx.ac.uk</span></p>
+        </section>
+    </footer>
+</div>
+
+
+</body>
