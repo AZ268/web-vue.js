@@ -48,13 +48,13 @@
                 <h3>Add classes or after-school activities here:</h3>
                 <hr>
                 <form id="login_form">
-                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 20%;">
+                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 40%;">
                     <br>
                     <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 40%;">
                     <br>
                     <input required type="text" id="location" v-model='location' placeholder=" Location" style="width: 40%;">
                     <br>
-                    <button type="submit" v-on:click='add'>Add class / activity</button>
+                    <button type="submit" v-on:click='add_function'>Add class / activity</button>
                                 <!--<button type="submit" @click="addList">Modify</button>-->
                                 <!--<button type="submit" @click="myDeleteFunction()">Remove</button>-->
 
@@ -66,7 +66,7 @@
             </div>
 
     <script>
-        var add_actibity = new Vue({
+        var add_activity = new Vue({
             el: '#add_activity',
             data: {
                 location: '',
@@ -77,13 +77,13 @@
             },
 
             methods: {
-                add: function () {
+                add_function: function () {
                     var classes = '';
                     var logged= '';
                     var addedTopic = this.topic;
                     var addedLocation = this.location;
                     var addedPrice = this.price;
-                    if (localStorage.getItem('clasess')) {
+                    if (localStorage.getItem('classes')) {
                         classes = JSON.parse(localStorage.getItem('classes'));
                     }
                     if (localStorage.getItem('logged')) {
@@ -103,7 +103,7 @@
                         localStorage.setItem('classes', JSON.stringify(classes));
                         alert('THE ACTIVITY HAS BEEN ADDED!')}
                         else{
-                            ('error')
+                            alert('Error. ONLY Service providers can add activities.')
                         }
                         // {
                         //     alert('THE ACTIVITY HAS BEEN ADDED!')
