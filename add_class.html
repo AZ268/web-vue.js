@@ -89,6 +89,7 @@
                     if (localStorage.getItem('logged')) {
                         logged = JSON.parse(localStorage.getItem('logged'));
                     }
+                    var logged_author= logged.registration_email;
                     if (classes && logged) {
 
                         if (addedTopic.length!==0 && addedPrice.length!==0 && addedLocation.length!==0 && logged.selection==='Service provider')
@@ -96,7 +97,10 @@
                             classes.push({
                                 'topic': addedTopic,
                                 'price': addedPrice,
-                                'location': addedLocation
+                                'location': addedLocation,
+                                'n.ranking':'',
+                                'sum.ranking':'',
+                                'author':logged_author
 
                             })
 
@@ -114,7 +118,10 @@
                         classes = [{
                             'topic': addedTopic,
                             'price': addedPrice,
-                            'location': addedLocation
+                            'location': addedLocation,
+                            'n.ranking':'',
+                            'sum.ranking':'',
+                            'author':logged_author
 
                         }];
                         localStorage.setItem('classes', JSON.stringify(classes));
