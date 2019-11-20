@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:buttonv-on="" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Web Page</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>Web page title</h1>
+    </header>
+    <div class="topnav" id="navbar">
+
+
+        <a href="index.html"> Info / Login</a>
+
+        <a href="javascript:void(0)">Activities</a>
+        <a href="javascript:void(0)">Buy</a>
+
+
+    </div>
+
+    <div class="activities" style="min-height: 500px">
+
+
+
+
+
+
+        <article class="component">
+
+
+
+        </article>
+        <aside>
+
+
+        </aside>
+        <section >
+            <div id="add_activity" style="text-align: center">
+                <h3>Add classes or after-school activities here:</h3>
+                <hr>
+                <form id="login_form">
+                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 50%;">
+                    <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 50%;">
+                    <input required type="text" id="location" v-model='location' placeholder=" Location" style="width: 50%;">
+                    <br>
+                    <button type="submit" v-on:click='add'>Add</button>
+                                <!--<button type="submit" @click="addList">Modify</button>-->
+                                <!--<button type="submit" @click="myDeleteFunction()">Remove</button>-->
+
+                </form>
+            </div>
+
+        </section>
+
+            </div>
+
+    <script>
+        var add_form = new Vue({
+            el: '#add_activity',
+            data: {
+                location: '',
+                price: '',
+                topic: '',
+                class: [],
+                logged:{}
+            },
+
+            methods: {
+                // myDeleteFunction: function () {
+                //     localStorage.removeItem('users');
+                //     this.myLocalData = localStorage.getItem('users');
+                // },
+                //
+                // // nie dziala do konca !!!!!!!!!!!!!!!!!
+                // addList: function () {
+                //     this.myLocalData = localStorage.setItem('users', (this.topic));
+                // },
+
+                add: function () {
+                    var classes = '';
+                    var logged= '';
+                    var addedTopic = this.topic;
+                    var addedLocation = this.location;
+                    var addedPrice = this.price;
+                    if (localStorage.getItem('clasess')) {
+                        classes = JSON.parse(localStorage.getItem('classes'));
+                    }
+                    if (localStorage.getItem('logged')) {
+                        logged = JSON.parse(localStorage.getItem('logged'));
+                    }
+                    if (classes && logged) {
+
+                        if (addedTopic.length!==0 && addedPrice.length!==0 && addedLocation.length!==0 && logged.selection==='Service provider')
+                        {
+                            classes.push({
+                                'topic': addedTopic,
+                                'price': addedPrice,
+                                'location': addedLocation
+
+                            })
+
+                        localStorage.setItem('classes', JSON.stringify(classes));
+                        alert('THE ACTIVITY HAS BEEN ADDED!')}
+                        else{
+                            ('error')
+                        }
+                        // {
+                        //     alert('THE ACTIVITY HAS BEEN ADDED!')
+                        // }
+
+                    }
+                    else if (addedTopic.length!==0 && addedPrice.length!==0 && addedLocation.length!==0 && logged.selection==='Service provider') {
+                        classes = [{
+                            'topic': addedTopic,
+                            'price': addedPrice,
+                            'location': addedLocation
+
+                        }];
+                        localStorage.setItem('classes', JSON.stringify(classes));
+                        {
+                            alert('ACTIVITY ADDED!')
+                        }
+                    }
+                    else{
+                        alert('ONLY SERVICE PROVIDERS CAN ADD ACTIVITIES!')
+                    }
+                }
+            }
+        })
+    </script>
+
+
+
+
+
+
+
+
+
+
+    <script>
+        window.onscroll = function () {
+            myFunction()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+
+    <footer>
+        <section>
+            <p id="author">Author: <span>Aneta Zabek</span></p>
+            <p id="contact">E-mail address: <span>AZ268@live.mdx.ac.uk</span></p>
+        </section>
+    </footer>
+</div>
+
+
+</body>

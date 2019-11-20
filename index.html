@@ -26,7 +26,7 @@
         <a href="javascript:void(0)"> Info / Login</a>
 
         <a href="search_activities.html">Activities</a>
-        <a href="javascript:void(0)">Buy</a>
+        <a href="add_class.html">Buy</a>
         <!--<ul>-->
             <!--<li v-for="c in userlog">-->
                 <!--{{ c }}-->
@@ -125,11 +125,11 @@
                                 return;
                             }
 
-                            users.push({'registration_email': newEmail, 'registration_password': newPassword, 'selection:': newSelect});
+                            users.push({'registration_email': newEmail, 'registration_password': newPassword, 'selection': newSelect});
                             localStorage.setItem('users', JSON.stringify(users));
                         }
                         else if ((newSelect.length && newPassword.length)&&(this.validEmail(this.registration_email))){
-                            users=[{'registration_email':this.registration_email,'registration_password':newPassword, 'selection:': newSelect}];
+                            users=[{'registration_email':this.registration_email,'registration_password':newPassword, 'selection': newSelect}];
                             localStorage.setItem('users',JSON.stringify(users));
                             {
                                 alert('You are successfully registered now!');

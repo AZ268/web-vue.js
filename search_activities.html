@@ -32,16 +32,9 @@
         </div>
     </div>
 
-    <div class="content" style="height: 500px">
+    <div class="content" style="min-height: 500px">
         <div id="app">
-            <!--<input v-model="query">-->
 
-        <!--<div v-for="item in list" style=" padding: 10px 10px 10px 10px ;"-->
-             <!--v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">-->
-            <!--<li v-for="(c, name) in item">-->
-                <!--{{ name }}: {{ c }}-->
-            <!--</li>-->
-        <!--</div>-->
             <form>
                 <input type="text" placeholder="Search.." id="query" v-model='query'>
                 <button v-on:click='computedList'><i class="fa fa-search"></i></button>
@@ -51,8 +44,8 @@
             <h2>Seach Results</h2>
 
 
-            <div v-for="item in computedList" style=" padding: 10px 10px 10px 10px ;"
-                 v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">
+            <div v-for="item in computedList" style=" padding: 20px 20px 20px 20px ;"
+                 v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'30px'}">
                 <li v-for="(c, name) in item">
                     {{ name }}: {{ c }}
                 </li>
@@ -105,8 +98,10 @@
                     var vm = this
                     return this.list.filter(function (item) {
                         // return item.topic.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
-                        return item.topic.indexOf(vm.query) !== -1
+                        return item.topic.indexOf(vm.query) !== -1;
+                        // var list= localStorage.setItem('list',JSON.stringify(this.list))
                     })
+                    // var list= localStorage.setItem('list',JSON.stringify(list))
                 }
 
                     //     app.courses= app.courses.filter(function (course){
