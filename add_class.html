@@ -19,10 +19,10 @@
     <div class="topnav" id="navbar">
 
 
-        <a href="index.html"> Info / Login</a>
+        <a href="index.html"> Registration / Login</a>
 
-        <a href="javascript:void(0)">Activities</a>
-        <a href="javascript:void(0)">Buy</a>
+        <a href="search_activities.html">Check activities</a>
+        <a href="add_class.html">Add activity</a>
 
 
     </div>
@@ -48,11 +48,13 @@
                 <h3>Add classes or after-school activities here:</h3>
                 <hr>
                 <form id="login_form">
-                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 50%;">
-                    <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 50%;">
-                    <input required type="text" id="location" v-model='location' placeholder=" Location" style="width: 50%;">
+                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 20%;">
                     <br>
-                    <button type="submit" v-on:click='add'>Add</button>
+                    <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 40%;">
+                    <br>
+                    <input required type="text" id="location" v-model='location' placeholder=" Location" style="width: 40%;">
+                    <br>
+                    <button type="submit" v-on:click='add'>Add class / activity</button>
                                 <!--<button type="submit" @click="addList">Modify</button>-->
                                 <!--<button type="submit" @click="myDeleteFunction()">Remove</button>-->
 
@@ -64,7 +66,7 @@
             </div>
 
     <script>
-        var add_form = new Vue({
+        var add_actibity = new Vue({
             el: '#add_activity',
             data: {
                 location: '',
@@ -75,16 +77,6 @@
             },
 
             methods: {
-                // myDeleteFunction: function () {
-                //     localStorage.removeItem('users');
-                //     this.myLocalData = localStorage.getItem('users');
-                // },
-                //
-                // // nie dziala do konca !!!!!!!!!!!!!!!!!
-                // addList: function () {
-                //     this.myLocalData = localStorage.setItem('users', (this.topic));
-                // },
-
                 add: function () {
                     var classes = '';
                     var logged= '';
