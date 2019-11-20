@@ -59,13 +59,98 @@
                                 <!--<button type="submit" @click="myDeleteFunction()">Remove</button>-->
 
                 </form>
+                <hr>
+                <!--<div v-for="log in logged">-->
+                <!--<h3>Courses added recently by {{ logged.registration_email }}</h3>-->
+                <!--</div>-->
             </div>
+
+            <div id="array" >
+                <div v-for="activity in check_classes" style="padding:10px 10px 10px 10px;"
+                     v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">
+                    <li v-for="">{{ activity.topic }}</li>
+                    <li>   {{ activity.location }}</li>
+                    <li>{{ activity.price }}</li>
+                    <button type="submit" v-on:click="remove_function">Remove activity</button>
+                </div>
+            </div>
+
+
+
 
         </section>
 
             </div>
 
     <script>
+        // var author_classes = JSON.parse(localStorage.getItem('classes'));
+        //
+        // if (localStorage.getItem('logged')) {
+        //     logged = JSON.parse(localStorage.getItem('logged'));
+        // }
+        // var logged_author = logged.registration_email;
+        //
+        // new Vue({
+        //     el: '#array',
+        //     data: {
+        //         // activeFilters: [],
+        //         classes: author_classes,
+        //         logged:''
+        //         // queryFind: '',
+        //     },
+        //     computed: {
+        //         check_classes: function () {
+        //             return this.classes.filter(function (activity) {
+        //                 return activity.author === logged_author
+        //             })
+        //         },
+        //     }
+        // })
+        if (localStorage.getItem('logged')) {
+                logged = JSON.parse(localStorage.getItem('logged'));
+            }
+        // localStorage.setItem('check_classes', JSON.stringify(check_classes))
+        // localStorage.setItem('check_classes', JSON.stringify(check_classes))
+         var array= new Vue({
+            el: '#array',
+            data: {
+                classes:
+                    JSON.parse(localStorage.getItem('classes'))
+            },
+             computed: {
+                         check_classes: function () {
+                             return this.classes.filter(function (activity) {
+                                 return activity.author === logged.registration_email
+                                 // var check_classes=localStorage.setItem('check_classes', JSON.stringify());
+
+                                 // localStorage.setItem('check_classes', JSON.stringify(check_classes))
+                             })
+                             // localStorage.setItem('check_classes', JSON.stringify(this.check_classes))
+
+
+                         },
+
+
+                     },
+             // methods: {
+             //     remove_function: function (x) {
+             //         // var check_classes=localStorage.setItem('check_classes', JSON.stringify());
+             //         // if (check_classes){
+             //         //     localStorage.setItem('check_classes', JSON.stringify(check_classes))
+             //         // }
+             //         var newww= JSON.parse(localStorage.getItem('check_classes'))
+             //         newww.splice(x, 1);
+             //             localStorage.setItem('123', JSON.stringify(newww))
+             //         // let parsed= JSON.stringify(this.check_classes)
+             //     }
+             // }
+
+        })
+
+
+
+
+
         var add_activity = new Vue({
             el: '#add_activity',
             data: {
@@ -105,7 +190,9 @@
                             })
 
                         localStorage.setItem('classes', JSON.stringify(classes));
-                        alert('THE ACTIVITY HAS BEEN ADDED!')}
+                        alert('THE ACTIVITY HAS BEEN ADDED!')
+
+                        }
                         else{
                             alert('Error. ONLY Service providers can add activities.')
                         }
@@ -135,7 +222,26 @@
                 }
             }
         })
+        // new Vue({
+        //     el: '#array',
+        //     data: {
+        //         location: '',
+        //         price: '',
+        //         topic: '',
+        //         class: [],
+        //         logged: {}
+        //     },
+        //
+        //     methods: {
+        //         remove_function: function () {
+        //             array.items.push({text: this.message});
+        //             this.message= "";
+        //         }
+        //     }
+        // })
     </script>
+
+
 
 
 
