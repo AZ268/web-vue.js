@@ -27,18 +27,7 @@
 
         <a href="search_activities.html">Check activities</a>
         <a href="add_class.html">Add activity</a>
-        <!--<ul>-->
-            <!--<li v-for="c in userlog">-->
-                <!--{{ c }}-->
-            <!--</li>-->
-        <!--</ul>-->
 
-        <!--<div class="search-container">-->
-            <!--<form>-->
-                <!--<input type="text" placeholder="Search.." name="search">-->
-                <!--<button type="submit"><i class="fa fa-search"></i></button>-->
-            <!--</form>-->
-        <!--</div>-->
     </div>
 
     <div class="content">
@@ -69,11 +58,7 @@
             <p>-----------------------------------------------------  or  --------------------------------------------------------</p>
             <form id="login_form">
             <h1>Login</h1>
-                <!--<div id="info">-->
-                    <!--<p v-for="info in infos">-->
-                        <!--{{ info.registration_email }}-->
-                    <!--</p>-->
-                <!--</div>-->
+
                 <label for="user">Enter your email address</label>
                 <br><br>
                 <input required type="email" id="user" v-model='user' placeholder="Enter Email">
@@ -172,9 +157,6 @@
                                     message_one= 'The email is not registered.Create an account.';
                                     }
                             }
-
-
-
                                     )}
                         if (message){
                             alert (message);
@@ -185,7 +167,6 @@
                         else if (!users) {
                             alert(message_one)
                             }
-
                     },
                 logout: function(){
                         var logged='';
@@ -195,10 +176,7 @@
                     if (logged){
                         localStorage.removeItem('logged');
                         alert(logged.registration_email + ' LOGGED OUT!');
-                        // setTimeout(function(){
                             window.location.href = 'index.html';
-
-                            // },1000);
                     }
 
                 }}})

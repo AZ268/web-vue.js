@@ -27,15 +27,10 @@
 
     </div>
 
-    <div class="activities" style="min-height: 500px">
-
-
-
-
+    <div class="activities" style="min-height: 700px">
 
 
         <article class="component">
-
 
 
         </article>
@@ -43,8 +38,9 @@
 
 
         </aside>
-        <section >
+        <section>
             <div id="add_activity" style="text-align: center">
+
                 <h3>Add classes or after-school activities here:</h3>
                 <hr>
                 <form id="login_form">
@@ -52,104 +48,57 @@
                     <br>
                     <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 40%;">
                     <br>
-                    <input required type="text" id="location" v-model='location' placeholder=" Location" style="width: 40%;">
+                    <input required type="text" id="location" v-model='location' placeholder=" Location"
+                           style="width: 40%;">
                     <br>
                     <button type="submit" v-on:click='add_function'>Add class / activity</button>
-                                <!--<button type="submit" @click="addList">Modify</button>-->
-                                <!--<button type="submit" @click="myDeleteFunction()">Remove</button>-->
-
                 </form>
                 <hr>
-                <!--<div v-for="log in logged">-->
-                <!--<h3>Courses added recently by {{ logged.registration_email }}</h3>-->
-                <!--</div>-->
             </div>
 
-            <div id="array" >
-                <div v-for="activity in check_classes" style="padding:10px 10px 10px 10px;"
+            <div id="log_activity">
+                <div v-if="ca.author === logged" v-for="(ca,index) in classes" :key="index" style="padding:10px 10px 10px 10px;"
                      v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">
-                    <li v-for="">{{ activity.topic }}</li>
-                    <li>   {{ activity.location }}</li>
-                    <li>{{ activity.price }}</li>
-                    <button type="submit" v-on:click="remove_function">Remove activity</button>
+                    <!--<li>{{ index }}</li>-->
+                    <li>{{ ca.topic }}</li>
+                    <li>{{ ca.location }}</li>
+                    <li>{{ ca.price }}</li>
+                    <button type="submit" @click="remove_classes(index)">Remove activity</button>
                 </div>
+
             </div>
-
-
 
 
         </section>
 
-            </div>
+    </div>
 
     <script>
-        // var author_classes = JSON.parse(localStorage.getItem('classes'));
-        //
-        // if (localStorage.getItem('logged')) {
-        //     logged = JSON.parse(localStorage.getItem('logged'));
-        // }
-        // var logged_author = logged.registration_email;
-        //
-        // new Vue({
-        //     el: '#array',
-        //     data: {
-        //         // activeFilters: [],
-        //         classes: author_classes,
-        //         logged:''
-        //         // queryFind: '',
-        //     },
-        //     computed: {
-        //         check_classes: function () {
-        //             return this.classes.filter(function (activity) {
-        //                 return activity.author === logged_author
-        //             })
-        //         },
-        //     }
-        // })
+
         if (localStorage.getItem('logged')) {
-                logged = JSON.parse(localStorage.getItem('logged'));
-            }
-        // localStorage.setItem('check_classes', JSON.stringify(check_classes))
-        // localStorage.setItem('check_classes', JSON.stringify(check_classes))
-         var array= new Vue({
-            el: '#array',
+            logged = JSON.parse(localStorage.getItem('logged'));
+        }
+
+        var log_activity = new Vue({
+            el: '#log_activity',
             data: {
-                classes:
-                    JSON.parse(localStorage.getItem('classes'))
+                classes: JSON.parse(localStorage.getItem('classes')),
+                logged: logged.registration_email
             },
-             computed: {
-                         check_classes: function () {
-                             return this.classes.filter(function (activity) {
-                                 return activity.author === logged.registration_email
-                                 // var check_classes=localStorage.setItem('check_classes', JSON.stringify());
-
-                                 // localStorage.setItem('check_classes', JSON.stringify(check_classes))
-                             })
-                             // localStorage.setItem('check_classes', JSON.stringify(this.check_classes))
-
-
-                         },
-
-
-                     },
-             // methods: {
-             //     remove_function: function (x) {
-             //         // var check_classes=localStorage.setItem('check_classes', JSON.stringify());
-             //         // if (check_classes){
-             //         //     localStorage.setItem('check_classes', JSON.stringify(check_classes))
-             //         // }
-             //         var newww= JSON.parse(localStorage.getItem('check_classes'))
-             //         newww.splice(x, 1);
-             //             localStorage.setItem('123', JSON.stringify(newww))
-             //         // let parsed= JSON.stringify(this.check_classes)
-             //     }
-             // }
-
-        })
-
-
-
-
+            computed: {
+                check_classes: function () {
+                    return this.classes.filter(function (activity) {
+                        return activity.author === logged.registration_email
+                    })
+                },
+            },
+            methods: {
+                remove_classes: function (index) {
+                    this.classes.splice(index, 1);
+                    localStorage.setItem('classes', JSON.stringify(this.classes));
+                }
+            }
+        });
 
         var add_activity = new Vue({
             el: '#add_activity',
@@ -158,13 +107,14 @@
                 price: '',
                 topic: '',
                 class: [],
-                logged:{}
+                logged: {},
+                classes: ''
             },
 
             methods: {
                 add_function: function () {
                     var classes = '';
-                    var logged= '';
+                    var logged = '';
                     var addedTopic = this.topic;
                     var addedLocation = this.location;
                     var addedPrice = this.price;
@@ -174,41 +124,36 @@
                     if (localStorage.getItem('logged')) {
                         logged = JSON.parse(localStorage.getItem('logged'));
                     }
-                    var logged_author= logged.registration_email;
+                    var logged_author = logged.registration_email;
                     if (classes && logged) {
 
-                        if (addedTopic.length!==0 && addedPrice.length!==0 && addedLocation.length!==0 && logged.selection==='Service provider')
-                        {
+                        if (addedTopic.length !== 0 && addedPrice.length !== 0 && addedLocation.length !== 0 && logged.selection === 'Service provider') {
                             classes.push({
                                 'topic': addedTopic,
                                 'price': addedPrice,
                                 'location': addedLocation,
-                                'n.ranking':'',
-                                'sum.ranking':'',
-                                'author':logged_author
+                                'n.ranking': '',
+                                'sum.ranking': '',
+                                'author': logged_author
 
                             })
 
-                        localStorage.setItem('classes', JSON.stringify(classes));
-                        alert('THE ACTIVITY HAS BEEN ADDED!')
+                            localStorage.setItem('classes', JSON.stringify(classes));
+                            alert('THE ACTIVITY HAS BEEN ADDED!')
 
                         }
-                        else{
+                        else {
                             alert('Error. ONLY Service providers can add activities.')
                         }
-                        // {
-                        //     alert('THE ACTIVITY HAS BEEN ADDED!')
-                        // }
-
                     }
-                    else if (addedTopic.length!==0 && addedPrice.length!==0 && addedLocation.length!==0 && logged.selection==='Service provider') {
+                    else if (addedTopic.length !== 0 && addedPrice.length !== 0 && addedLocation.length !== 0 && logged.selection === 'Service provider') {
                         classes = [{
                             'topic': addedTopic,
                             'price': addedPrice,
                             'location': addedLocation,
-                            'n.ranking':'',
-                            'sum.ranking':'',
-                            'author':logged_author
+                            'n.ranking': '',
+                            'sum.ranking': '',
+                            'author': logged_author
 
                         }];
                         localStorage.setItem('classes', JSON.stringify(classes));
@@ -216,40 +161,13 @@
                             alert('ACTIVITY ADDED!')
                         }
                     }
-                    else{
+                    else {
                         alert('ONLY SERVICE PROVIDERS CAN ADD ACTIVITIES!')
                     }
                 }
             }
         })
-        // new Vue({
-        //     el: '#array',
-        //     data: {
-        //         location: '',
-        //         price: '',
-        //         topic: '',
-        //         class: [],
-        //         logged: {}
-        //     },
-        //
-        //     methods: {
-        //         remove_function: function () {
-        //             array.items.push({text: this.message});
-        //             this.message= "";
-        //         }
-        //     }
-        // })
     </script>
-
-
-
-
-
-
-
-
-
-
 
 
     <script>
