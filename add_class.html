@@ -21,8 +21,8 @@
 
         <a href="index.html"> Registration / Login</a>
 
-        <a href="search_activities.html">Check activities</a>
-        <a href="add_class.html">Add activity</a>
+        <a href="new_search.html">Check activities</a>
+        <a href="add_class.html">Add / Remove activity</a>
 
 
     </div>
@@ -35,6 +35,22 @@
 
         </article>
         <aside>
+            <hr>
+            <p>On this page is possible to:</p>
+            <hr>
+            <li>
+                Add classes
+            </li>
+            <!--<br>-->
+            <li>
+                Remove classes
+            </li>
+            <!--<br>-->
+            <li>
+                Check
+                added classes
+            </li>
+            <hr>
 
 
         </aside>
@@ -44,12 +60,19 @@
                 <h3>Add classes or after-school activities here:</h3>
                 <hr>
                 <form id="login_form">
-                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 40%;">
+                    <input required type="text" id="topic" v-model='topic' placeholder=" Topic" style="width: 40%; height: 25px ">
                     <br>
-                    <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 40%;">
+                    <input required type="text" id="price" v-model='price' placeholder=" Price" style="width: 40%;height: 25px">
                     <br>
                     <input required type="text" id="location" v-model='location' placeholder=" Location"
-                           style="width: 40%;">
+                           style="width: 40%;height: 25px">
+                    <br>
+                    <input required type="text" id="time" v-model='time' placeholder=" Time"
+                           style="width: 40%;height: 25px">
+                    <br>
+                    <input required type="text" id="length" v-model='length' placeholder=" Length"
+                           style="width: 40%;height: 25px">
+
                     <br>
                     <button type="submit" v-on:click='add_function'>Add class / activity</button>
                 </form>
@@ -57,13 +80,19 @@
             </div>
 
             <div id="log_activity">
-                <div v-if="ca.author === logged" v-for="(ca,index) in classes" :key="index" style="padding:10px 10px 10px 10px;"
-                     v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">
+                <p>This are the activities added by the user logged as:
+                    <span style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">{{logged}}</span></p>
+                <p>Account type: <span style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">{{selection}}</span> </p>
+
+                <div v-if="ca.author === logged" v-for="(ca,index) in classes" :key="index" style="width: 300px; padding:10px 30px 10px 30px;"
+                     v-bind:style="{ 'border':'solid #999 3px', 'display':'inline-block', 'margin':'10px'}">
                     <!--<li>{{ index }}</li>-->
-                    <li>{{ ca.topic }}</li>
-                    <li>{{ ca.location }}</li>
-                    <li>{{ ca.price }}</li>
-                    <button type="submit" @click="remove_classes(index)">Remove activity</button>
+                    <li>Topic : {{ca.topic}}</li>
+                    <li>Location : {{ ca.location }}</li>
+                    <li>Price : £ {{ ca.price }}</li>
+                    <li>Time : {{ca.time}}</li>
+                    <li>Length : {{ca.length}}</li>
+                    <button type="submit" @click="remove_classes(index)" style="display: inline-block">Remove activity</button>
                 </div>
 
             </div>
@@ -83,7 +112,8 @@
             el: '#log_activity',
             data: {
                 classes: JSON.parse(localStorage.getItem('classes')),
-                logged: logged.registration_email
+                logged: logged.registration_email,
+                selection: logged.selection
             },
             computed: {
                 check_classes: function () {
@@ -106,6 +136,8 @@
                 location: '',
                 price: '',
                 topic: '',
+                time:'',
+                length:'',
                 class: [],
                 logged: {},
                 classes: ''
@@ -118,6 +150,8 @@
                     var addedTopic = this.topic;
                     var addedLocation = this.location;
                     var addedPrice = this.price;
+                    var addedTime = this.time;
+                    var addedLength = this.length;
                     if (localStorage.getItem('classes')) {
                         classes = JSON.parse(localStorage.getItem('classes'));
                     }
@@ -132,6 +166,8 @@
                                 'topic': addedTopic,
                                 'price': addedPrice,
                                 'location': addedLocation,
+                                'time':addedTime,
+                                'length':addedLength,
                                 'n.ranking': '',
                                 'sum.ranking': '',
                                 'author': logged_author
@@ -151,6 +187,8 @@
                             'topic': addedTopic,
                             'price': addedPrice,
                             'location': addedLocation,
+                            'time':addedTime,
+                            'length':addedLength,
                             'n.ranking': '',
                             'sum.ranking': '',
                             'author': logged_author

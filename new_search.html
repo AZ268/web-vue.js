@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:buttonv-on="" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>My Web Page</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>Web page title</h1>
+    </header>
+    <div class="topnav" id="navbar">
+
+
+        <a href="index.html"> Registration / Login</a>
+
+        <a href="search.html">Check activities</a>
+        <a href="add_class.html">Add / Remove activity</a>
+
+
+    </div>
+
+    <div class="activities" style="min-height: 700px">
+
+
+        <article class="component">
+
+
+        </article>
+        <aside>
+            <hr>
+            <p>On this page is possible to:</p>
+            <hr>
+            <li>
+                Search
+            </li>
+            <li>
+                Filter
+            </li>
+            <li>
+                Sort
+            </li>
+            <hr>
+
+        </aside>
+        <section>
+            <div id="array">
+                <p></p>
+
+
+                <div style="border:solid #999 3px;width: 100%; padding: 10px 10px 10px 10px ;text-align: center; margin-bottom: 10px">
+                    <p style="background-color: #a6a6a6 ; text-align: center">Search</p>
+                    <p>Total n. classes: {{ data.length }}.</p>
+                    <p>Filtered classes: {{ filtered.length }}.</p>
+
+                    <label>
+                        <input v-model="queryFind" style="width: 300px; height: 25px" placeholder="Search...">
+                    </label>
+
+                </div>
+                <div style="border:solid #999 3px;width: 100%; padding: 10px 10px 10px 10px ;text-align: center">
+                    <p style="background-color: #a6a6a6 ; text-align: center">Filter</p>
+                    <label >
+                        <select v-model="filteredProperty" style="width: 300px; height: 25px">
+                            <option value="topic">Topic</option>
+                            <option value="price">Price</option>
+                        </select>
+                    </label>
+                    <br>
+
+                    <input placeholder="filter value" v-model="query" style="width: 300px; height: 25px">
+                    <br>
+                    <button @click="addFilter" style="width: 300px; height: 25px">Filter</button>
+                </div>
+
+                <p>
+
+
+                <table v-if="activeFilters.length">
+                    <tr style="width: 100px">
+                        <td colspan="3">You filtered your data by:</td>
+                    </tr>
+
+                    <tr v-for="(filter, index) in activeFilters" :key="index">
+                        <td>{{ filter.topic }}:</td>
+                        <td>{{ filter.value }}</td>
+                        <td><a href="#" @click.prevented=removeFilter(index)>remove</a></td>
+                    </tr>
+                </table>
+
+                <hr v-if="activeFilters.length" >
+
+
+                <hr style="border: solid #999 3px">
+
+
+                <h3 style="text-align: center">Courses offered by Service Providers:</h3>
+                <div v-for="(record, index) in filtered" :key="index" style="width: 330px; height: 270px; padding: 10px 30px 10px 30px;"
+                     v-bind:style="{ 'border':'solid #999 3px', 'display':'inline-block', 'margin-left':'220px', 'margin-bottom':'15px'}">
+
+                    <li style="background-color: #a6a6a6">Topic: {{ record.topic }}</li>
+                    <li>Price: £ {{ record.price }}</li>
+                    <li>Location: {{ record.location }}</li>
+                    <li>Time: {{ record.time}}</li>
+                    <li>Length: {{ record.length}}</li>
+
+                    <p></p>
+
+                    <div v-if="logged_author === record.author">
+                        <button type="submit" @click="abc(index)">Edit</button>
+                    </div>
+                    <p></p>
+                    <!-- nie dziala dodawanie rankingu -->
+                    <div>
+                        <label> <input v-model="mark" style="width:10px; height:10px"></label>
+                        <button v-on:click="counter = mark">Add</button><br>
+                        Mark: {{ counter }}
+                    </div>
+                </div>
+
+                <h3>Courses sorted:</h3>
+
+                <table style=" border:solid #999 3px">
+                    <tbody>
+                    <tr v-for="(record, index) in sortedArrayTopic_A" :key="index">
+                        <td style="padding-right:20px; border:solid #999 3px">{{ record.topic }}</td>
+                        <td style="padding-right:20px;">{{ record.location }}</td>
+                        <td style="padding-right:20px;">{{ record.price }}</td>
+                        <td style="padding-right:20px;">{{ record.time }}</td>
+                        <td style="padding-right:20px;">{{ record.length}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <label><input type = "radio" id = "black" value = "A-Z" v-model = "picked">A-Z</label>
+                <label><input type = "radio" id = "white" value = "Z-A" v-model = "picked">sort Z-A</label>
+                <!--<h3>Sort: {{picked}} </h3>-->
+                <table>
+                    <tbody>
+                    <tr v-for="(record, index) in sortedArrayTopic_B" :key="index"></tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </section>
+
+    </div>
+
+    <script>
+        let myData = JSON.parse(localStorage.getItem('classes'));
+
+
+        if (localStorage.getItem('logged')) {
+            logged = JSON.parse(localStorage.getItem('logged'));
+        }
+        let logged_author = logged.registration_email;
+
+        new Vue({
+            el: '#array',
+            data: {
+                filteredProperty: 'topic',
+                query: '',
+                activeFilters: [],
+                data: myData,
+                queryFind: '',
+                counter: '0',
+                picked : ' Default value',
+                mark: '',
+                logged_author: logged_author,
+            },
+            computed: {
+                computedList: function () {
+                    var vm = this;
+                    return this.data.filter(function (item) {
+                        return item.topic.toLowerCase().indexOf(vm.queryFind.toLowerCase()) !== -1
+                    })
+                },
+                filtered() {
+                    let filtered = this.computedList;
+                    this.activeFilters.forEach(filter => {
+                        filtered = filtered.filter(record => {
+                            return filter.topic === 'topic' ? new RegExp(filter.value, 'i').test(record[filter.topic]) : record[filter.topic] === filter.value
+                        })
+                    });
+                    return filtered
+                },
+                sortedArrayTopic_A: function () {
+                    function compare(a, b) {
+                        if (a.topic < b.topic)
+                            return -1;
+                        if (a.topic > b.topic)
+                            return 1;
+                        return 0;
+                    }
+                    return this.filtered.sort(compare);
+                },
+
+                sortedArrayTopic_B: function () {
+                    function compare1(a, b) {
+                        if (b.topic < a.topic)
+                            return -1;
+                        if (b.topic > a.topic)
+                            return 1;
+                        return 0;
+                    }
+                    return this.filtered.sort(compare1);
+                },
+
+                sortedArrayPrice: function () {
+                    function compare1(a, b) {
+                        if (a.price < b.price)
+                            return -1;
+                        if (a.price > b.price)
+                            return 1;
+                        return 0;
+                    }
+                    return this.filtered.sort(compare1);
+                }
+            },
+            methods: {
+                addFilter() {
+                    this.activeFilters.push({
+                        topic: this.filteredProperty,
+                        value: this.query
+                    });
+                    this.query = ''
+                },
+                removeFilter(idx) {
+                    this.activeFilters.splice(idx, 1)
+                }
+
+            }
+        })
+
+
+
+
+
+
+    </script>
+
+
+    <script>
+        window.onscroll = function () {
+            myFunction()
+        };
+
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+    </script>
+
+
+    <footer>
+        <section>
+            <p id="author">Author: <span>Aneta Zabek</span></p>
+            <p id="contact">E-mail address: <span>AZ268@live.mdx.ac.uk</span></p>
+        </section>
+    </footer>
+</div>
+
+
+</body>
