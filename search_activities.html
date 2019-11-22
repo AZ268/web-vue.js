@@ -22,7 +22,7 @@
         <a href="index.html"> Registration / Login</a>
 
         <a href="search_activities.html">Check activities</a>
-        <a href="add_class.html">Add activity</a>
+        <a href="add_class.html">Add / Remove activity</a>
 
         <div class="search-container">
             <form>
@@ -33,32 +33,8 @@
     </div>
 
     <div class="content" style="min-height: 500px">
-        <div id="app">
 
-            <form>
-                <input type="text" placeholder="Search.." id="query" v-model='query'>
-                <button v-on:click='computedList'><i class="fa fa-search"></i></button>
-            </form>
-
-
-            <h2>Seach Results</h2>
-
-
-            <div v-for="item in computedList" style=" padding: 20px 20px 20px 20px ;"
-                 v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'30px'}">
-                <li v-for="(c, name) in item">
-                    {{ name }}: {{ c }}
-                </li>
-            </div>
-
-                <!--<div v-for="course in search_button" style=" padding: 10px 10px 10px 10px ;"-->
-                     <!--v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">-->
-                    <!--<li v-for="(c, name) in course">-->
-                        <!--{{ name }}: {{ c }}-->
-                    <!--</li>-->
-                <!--</div>-->
-
-        </div>
+    </div>
 
 
 
@@ -76,44 +52,6 @@
 
     </div>
 
-    <script>
-         new Vue({
-            el: '#app',
-            data: {
-                query:'',
-                list:[
-                    { topic: 'math', location: 'hendon', price: 100 },
-                    { topic: 'math', location: 'colindale', price: 80 },
-                    { topic: 'math', location: 'brent cross', price: 90 },
-                    { topic: 'math', location: 'golders green', price: 120 },
-                    { topic: 'english', location: 'hendon', price: 110 },
-                    { topic: 'english', location: 'colindale', price: 90 },
-                    { topic: 'english', location: 'brent cross', price: 90 },
-                    { topic: 'english', location: 'golders green', price: 130 },
-                    { topic: 'piano', location: 'hendon', price: 120 },
-                    { topic: 'piano', location: 'golders green', price: 140 }]
-            },
-            computed: {
-                computedList: function () {
-                    var vm = this
-                    return this.list.filter(function (item) {
-                        // return item.topic.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
-                        return item.topic.indexOf(vm.query) !== -1;
-                        // var list= localStorage.setItem('list',JSON.stringify(this.list))
-                    })
-                    // var list= localStorage.setItem('list',JSON.stringify(list))
-                }
-
-                    //     app.courses= app.courses.filter(function (course){
-                    //         return course.topic.match(/math/)
-                    // })
-                    // return this.courses.filter(function (course) {
-                    //     return course.topic === this.search
-                    // })
-
-                }
-            })
-    </script>
 
 
 
