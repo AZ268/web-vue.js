@@ -21,7 +21,7 @@
 
         <a href="index.html"> Registration / Login</a>
 
-        <a href="search.html">Check activities</a>
+        <a href="new_search.html">Check activities</a>
         <a href="add_class.html">Add / Remove activity</a>
 
 
@@ -55,7 +55,7 @@
                 <p></p>
 
 
-                <div style="border:solid #999 3px;width: 100%; padding: 10px 10px 10px 10px ;text-align: center; margin-bottom: 10px">
+                <div style="border:solid #999 3px;width: 90%; padding: 10px 10px 10px 10px ;text-align: center; margin-bottom: 10px">
                     <p style="background-color: #a6a6a6 ; text-align: center">Search</p>
                     <p>Total n. classes: {{ data.length }}.</p>
                     <p>Filtered classes: {{ filtered.length }}.</p>
@@ -65,7 +65,7 @@
                     </label>
 
                 </div>
-                <div style="border:solid #999 3px;width: 100%; padding: 10px 10px 10px 10px ;text-align: center">
+                <div style="border:solid #999 3px;width: 90%; padding: 10px 10px 10px 10px ;text-align: center">
                     <p style="background-color: #a6a6a6 ; text-align: center">Filter</p>
                     <label >
                         <select v-model="filteredProperty" style="width: 300px; height: 25px">
@@ -97,12 +97,32 @@
 
                 <hr v-if="activeFilters.length" >
 
+                <div class="user_row">
+                    <div>
+                        <p>Sort price in ascending or descending order</p>
+                        <button v-on:click="doSort('topic')">
+                            TOPIC ORDER <span v-if="sort.field=='topic'">
+                        ({{sort.desc?'DESCENDING':'ASCENDING'}})</span></button>
+                    </div>
+                    <!--<div>-->
+                    <!--<button v-on:click="doSort('location')">-->
+                    <!--Location: <span v-if="sort.field=='location'">-->
+                    <!--({{sort.desc?'DESC':'ASC'}})</span></button>-->
+                    <!--</div>-->
+                    <div>
+                        <p>Sort price in ascending or descending order</p>
+                        <button v-on:click="doSort('price')">
+                            PRICE ORDER<span v-if="sort.field=='price'">
+                        ({{sort.desc?'DESCENDING':'ASCENDING'}})</span></button>
+                    </div>
+                </div>
+
 
                 <hr style="border: solid #999 3px">
 
 
                 <h3 style="text-align: center">Courses offered by Service Providers:</h3>
-                <div v-for="(record, index) in filtered" :key="index" style="width: 330px; height: 270px; padding: 10px 30px 10px 30px;"
+                <div v-for="(record, index) in sortedData" :key="index" style="width: 330px; height: 270px; padding: 10px 30px 10px 30px;"
                      v-bind:style="{ 'border':'solid #999 3px', 'display':'inline-block', 'margin-left':'220px', 'margin-bottom':'15px'}">
 
                     <li style="background-color: #a6a6a6">Topic: {{ record.topic }}</li>
@@ -125,28 +145,64 @@
                     </div>
                 </div>
 
-                <h3>Courses sorted:</h3>
+                <!--<h3>Courses sorted:</h3>-->
 
-                <table style=" border:solid #999 3px">
-                    <tbody>
-                    <tr v-for="(record, index) in sortedArrayTopic_A" :key="index">
-                        <td style="padding-right:20px; border:solid #999 3px">{{ record.topic }}</td>
-                        <td style="padding-right:20px;">{{ record.location }}</td>
-                        <td style="padding-right:20px;">{{ record.price }}</td>
-                        <td style="padding-right:20px;">{{ record.time }}</td>
-                        <td style="padding-right:20px;">{{ record.length}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <!--<table style=" border:solid #999 3px">-->
+                    <!--<tbody>-->
+                    <!--<tr v-for="(record, index) in sortedArrayTopic_A" :key="index">-->
+                        <!--<td style="padding-right:20px; border:solid #999 3px">{{ record.topic }}</td>-->
+                        <!--<td style="padding-right:20px;">{{ record.location }}</td>-->
+                        <!--<td style="padding-right:20px;">{{ record.price }}</td>-->
+                        <!--<td style="padding-right:20px;">{{ record.time }}</td>-->
+                        <!--<td style="padding-right:20px;">{{ record.length}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
 
-                <label><input type = "radio" id = "black" value = "A-Z" v-model = "picked">A-Z</label>
-                <label><input type = "radio" id = "white" value = "Z-A" v-model = "picked">sort Z-A</label>
+                <!--<label><input type = "radio" id = "black" value = "A-Z" v-model = "picked">A-Z</label>-->
+                <!--<label><input type = "radio" id = "white" value = "Z-A" v-model = "picked">sort Z-A</label>-->
                 <!--<h3>Sort: {{picked}} </h3>-->
-                <table>
-                    <tbody>
-                    <tr v-for="(record, index) in sortedArrayTopic_B" :key="index"></tr>
-                    </tbody>
-                </table>
+                <!--<table>-->
+                    <!--<tbody>-->
+                    <!--<tr v-for="(record, index) in sortedArrayTopic_B" :key="index"></tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+
+
+                <!--<div class="user_row">-->
+                    <!--<div>-->
+                        <!--<button v-on:click="doSort('topic')">-->
+                            <!--Topic: <span v-if="sort.field=='topic'">-->
+                        <!--({{sort.desc?'DESC':'ASC'}})</span></button>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<button v-on:click="doSort('location')">-->
+                            <!--Location: <span v-if="sort.field=='location'">-->
+                        <!--({{sort.desc?'DESC':'ASC'}})</span></button>-->
+                    <!--</div>-->
+                    <!--<div>-->
+                        <!--<button v-on:click="doSort('price')">-->
+                            <!--Price:<span v-if="sort.field=='price'">-->
+                        <!--({{sort.desc?'DESC':'ASC'}})</span></button>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <p></p>
+                <!--<div class="user_row" v-for="sorted in sortedData">-->
+                    <!--<div>{{ sorted.topic }}</div>-->
+                    <!--<div>{{ sorted.location }}</div>-->
+                    <!--<div>{{ sorted.price }}</div>-->
+                <!--</div>-->
+
+                <!--<div v-for="sorted in sortedData" style="padding: 10px 10px 10px 10px "-->
+                     <!--v-bind:style="{ 'border':'solid CadetBlue 3px', 'display':'inline-block', 'margin':'10px'}">-->
+                    <!--<li v-for="(c, name) in sorted">-->
+                        <!--{{ name }}: {{ c }}-->
+                    <!--</li>-->
+
+
+                <!--</div>-->
+
+
             </div>
 
 
@@ -162,7 +218,7 @@
         if (localStorage.getItem('logged')) {
             logged = JSON.parse(localStorage.getItem('logged'));
         }
-        let logged_author = logged.registration_email;
+        // let logged_author = logged.registration_email;
 
         new Vue({
             el: '#array',
@@ -175,7 +231,8 @@
                 counter: '0',
                 picked : ' Default value',
                 mark: '',
-                logged_author: logged_author,
+                sort: {field: '', desc: true},
+                // logged_author: logged_author,
             },
             computed: {
                 computedList: function () {
@@ -224,9 +281,23 @@
                         return 0;
                     }
                     return this.filtered.sort(compare1);
+                },
+                sortedData() {
+                    if (!this.sort.field) {
+                        return this.filtered
+                    }
+
+                    return this.filtered.concat().sort((a, b) => {
+                        if (this.sort.desc) {
+                            return a[this.sort.field] > b[this.sort.field] ? -1 : 1
+                        } else {
+                            return a[this.sort.field] > b[this.sort.field] ? 1 : -1
+                        }
+                    })
                 }
             },
             methods: {
+                // add filter on button
                 addFilter() {
                     this.activeFilters.push({
                         topic: this.filteredProperty,
@@ -234,9 +305,19 @@
                     });
                     this.query = ''
                 },
+                // remove filter link
                 removeFilter(idx) {
                     this.activeFilters.splice(idx, 1)
-                }
+                },
+                //sorting method
+                doSort(field) {
+                    if (field === this.sort.field) {
+                        this.sort.desc = !this.sort.desc
+                    } else {
+                        this.sort.field = field;
+                        this.sort.desc = true;
+                    }
+                },
 
             }
         })

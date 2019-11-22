@@ -18,8 +18,9 @@
     <div class="topnav" id="navbar">
         <div id="info" style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">
             <p v-for="info in infos">
-                {{ info.registration_email }} you are logged now
+                User: {{ info.registration_email }}
             </p>
+            <p v-for="info in infos" v-if="info.registration_email === undefined"> Not logged</p>
         </div>
 
 

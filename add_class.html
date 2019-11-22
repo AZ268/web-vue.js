@@ -80,14 +80,14 @@
             </div>
 
             <div id="log_activity">
-                <p>This are the activities added by the user logged as:
-                    <span style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">{{logged}}</span></p>
+                <p v-if="logged" >Check if you added activities as:
+                    <span v-if="logged" style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">{{logged.registration_email}}</span></p>
                 <p>Account type: <span style="color: palevioletred ;font-family: 'Calibri', monospace; margin-left: 15px">{{selection}}</span> </p>
 
-                <div v-if="ca.author === logged" v-for="(ca,index) in classes" :key="index" style="width: 300px; padding:10px 30px 10px 30px;"
+                <div v-if="ca.author === logged.registration_email" v-for="(ca,index) in classes" :key="index" style="width: 300px; padding:10px 30px 10px 30px;"
                      v-bind:style="{ 'border':'solid #999 3px', 'display':'inline-block', 'margin':'10px'}">
                     <!--<li>{{ index }}</li>-->
-                    <li>Topic : {{ca.topic}}</li>
+                    <li v-if="logged">Topic : {{ca.topic}}</li>
                     <li>Location : {{ ca.location }}</li>
                     <li>Price : £ {{ ca.price }}</li>
                     <li>Time : {{ca.time}}</li>
@@ -104,16 +104,21 @@
 
     <script>
 
-        if (localStorage.getItem('logged')) {
-            logged = JSON.parse(localStorage.getItem('logged'));
-        }
+        logged = JSON.parse(localStorage.getItem('logged'));
+
+        // if (localStorage.getItem('logged')) {
+        //     logged = JSON.parse(localStorage.getItem('logged'));
+        // }
+        if (logged){
 
         var log_activity = new Vue({
             el: '#log_activity',
             data: {
                 classes: JSON.parse(localStorage.getItem('classes')),
-                logged: logged.registration_email,
-                selection: logged.selection
+                logged_id: logged.registration_email,
+                selection: logged.selection,
+                logged: JSON.parse(localStorage.getItem('logged')),
+                ca:''
             },
             computed: {
                 check_classes: function () {
@@ -204,7 +209,12 @@
                     }
                 }
             }
-        })
+        })}
+        else{
+            logged = [];
+            localStorage.setItem('logged',JSON.stringify(logged));
+            window.location.href = 'add_class.html';
+        }
     </script>
 
 
